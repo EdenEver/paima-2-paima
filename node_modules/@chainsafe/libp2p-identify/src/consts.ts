@@ -1,0 +1,6 @@
+export const PROTOCOL_VERSION = 'ipfs/0.1.0' // deprecated
+export const MULTICODEC_IDENTIFY = '/ipfs/id/1.0.0' // deprecated
+
+export const IDENTIFY_PROTOCOL_VERSION = '0.1.0'
+export const MULTICODEC_IDENTIFY_PROTOCOL_NAME = 'id'
+export const MULTICODEC_IDENTIFY_PROTOCOL_VERSION = '1.0.0'
