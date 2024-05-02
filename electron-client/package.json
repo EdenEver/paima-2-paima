@@ -44,8 +44,8 @@
     "@libp2p/tcp": "9.0.23",
     "@libp2p/websockets": "8.0.21",
     "@multiformats/multiaddr": "12.2.1",
-    "@react-three/drei": "9.99.2",
-    "@react-three/fiber": "8.15.19",
+    "@react-three/drei": "^9.105.6",
+    "@react-three/fiber": "^8.16.3",
     "@types/lodash": "4.17.0",
     "@types/node": "18.19.9",
     "@types/react": "18.2.48",
@@ -65,9 +65,9 @@
     "prettier": "3.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "recast-navigation": "0.17.0",
+    "recast-navigation": "^0.27.0",
     "tailwindcss": "^3.4.3",
-    "three": "0.160.0",
+    "three": "^0.164.1",
     "typescript": "5.3.3",
     "vite": "5.0.12"
   }

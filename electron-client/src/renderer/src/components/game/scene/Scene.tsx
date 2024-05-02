@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef } from 'react'
 
-import { Group, Quaternion, Vector3 } from "three"
-import { Box, Capsule, Line } from "@react-three/drei"
-import { useFrame, useThree } from "@react-three/fiber"
+import { Group, Quaternion, Vector3 } from 'three'
+import { Box, Capsule, Line, Text } from '@react-three/drei'
+import { useFrame, useThree } from '@react-three/fiber'
 
-import { CAMERA_OFFSET } from "@comp/game"
-import { terrain, RecastNavmesh } from "@comp/game/terrain"
-import { PLAYER_SPEED, Player, usePlayer } from "@comp/game/player"
-import { Knight, KnightActionName } from "@comp/game/entities"
+import { CAMERA_OFFSET } from '@comp/game'
+import { terrain, RecastNavmesh } from '@comp/game/terrain'
+import { PLAYER_SPEED, Player, usePlayer } from '@comp/game/player'
+import { Knight, KnightActionName } from '@comp/game/entities'
 
 export const Scene = () => {
   const playerRef = useRef<Group>(null!)
@@ -57,12 +57,12 @@ export const Scene = () => {
     const position: [number, number, number] = [
       playerRef.current.position.x,
       playerRef.current.position.y,
-      playerRef.current.position.z,
+      playerRef.current.position.z
     ]
     const rotation: [number, number, number] = [
       playerRef.current.rotation.x,
       playerRef.current.rotation.y,
-      playerRef.current.rotation.z,
+      playerRef.current.rotation.z
     ]
 
     if (playerRef.current.position.distanceTo(next) < 0.1) {
@@ -71,7 +71,7 @@ export const Scene = () => {
           ...prev,
           position,
           rotationY: rotation[1],
-          path: player.path ? prev.path.slice(1) : [],
+          path: player.path ? prev.path.slice(1) : []
         })
       )
     } else {
@@ -79,7 +79,7 @@ export const Scene = () => {
         (prev: Player): Player => ({
           ...prev,
           position,
-          rotationY: rotation[1],
+          rotationY: rotation[1]
         })
       )
     }
@@ -91,16 +91,16 @@ export const Scene = () => {
     text.current.position.copy(playerRef.current.position)
   })
 
-  const [action, setCharacterAction] = React.useState<KnightActionName>("Idle")
+  const [action, setCharacterAction] = React.useState<KnightActionName>('Idle')
 
   useEffect(() => {
     if (player.path.length > 0) {
-      setCharacterAction("Running_A")
+      setCharacterAction('Running_A')
       return
     }
 
     if (!player.target) {
-      setCharacterAction("Idle")
+      setCharacterAction('Idle')
       return
     }
   }, [player.path, player.target])
@@ -109,30 +109,30 @@ export const Scene = () => {
 
   return (
     <>
-      {/* <group ref={text}>
+      <group ref={text}>
         <Text
-          color={"#000"}
+          color={'#000'}
           fontSize={0.35}
           rotation-y={Math.PI / 4}
           position-y={3.5 - (playerRef.current?.position.y || 0)}
         >
-          {player.name}
+          Player Name
         </Text>
-      </group> */}
+      </group>
 
       <RecastNavmesh>
         {terrain.map(({ type, props, material, width, height, radius, length }, i) => {
-          if (type === "box")
+          if (type === 'box')
             return (
               <Box args={[width, height]} {...props} key={`terrain-${i}`}>
-                <meshStandardMaterial color={material?.color ?? "#444"} />
+                <meshStandardMaterial color={material?.color ?? '#444'} />
               </Box>
             )
 
-          if (type === "capsule")
+          if (type === 'capsule')
             return (
               <Capsule args={[radius, length]} {...props} key={`terrain-${i}`}>
-                <meshStandardMaterial color={material?.color ?? "#444"} />
+                <meshStandardMaterial color={material?.color ?? '#444'} />
               </Capsule>
             )
 
@@ -151,7 +151,7 @@ export const Scene = () => {
         <Line
           points={[
             new Vector3(playerRef.current.position.x, 0.5, playerRef.current.position.z),
-            new Vector3(closestChest.current.position[0], 0.5, closestChest.current.position[2]),
+            new Vector3(closestChest.current.position[0], 0.5, closestChest.current.position[2])
           ]}
           opacity={closestChest.current.opacity}
           transparent

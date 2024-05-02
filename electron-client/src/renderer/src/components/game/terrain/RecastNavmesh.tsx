@@ -100,13 +100,13 @@ const Navmesh = ({ children }: NavmeshProps) => {
 
       indicatorRef.current = 50
 
-      const navMeshQuery = new NavMeshQuery({ navMesh: navMesh.current })
+     const navMeshQuery = new NavMeshQuery({ navMesh: navMesh.current })
 
-      // const { success, path: newPath } = navMeshQuery.computePath(startPosition, point)
+      const { success, path: newPath } = navMeshQuery.computePath(startPosition, point)
 
-      // if (!success) return
+      if (!success) return
 
-      const newPath = navMeshQuery.computePath(startPosition, point)
+      // const newPath = navMeshQuery.computePath(startPosition, point)
 
       // NOTE(Alan): Remove n first points if they are too close to the player
       //             avoids stuttering when repeatedly clicking in the same direction
