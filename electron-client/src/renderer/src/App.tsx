@@ -30,9 +30,8 @@ const Content = (): React.ReactNode => {
   }, [libp2p.services.pubsub])
 
   return (
-    <div className='h-screen'>
-
-  <Game />
+    <div className="h-screen">
+      <Game />
     </div>
   )
 }
