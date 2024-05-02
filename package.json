@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "dev:bootstrap-server": "npm run dev -w bootstrap-server",
+    "dev:electron-client": "npm run dev -w electron-client",
     "dev:client": "npm run dev -w client",
     "dev": "run-p dev:*"
   },
   "workspaces": [
     "./bootstrap-server",
+    "./electron-client",
     "./client"
   ],
   "keywords": [],
