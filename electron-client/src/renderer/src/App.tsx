@@ -1,10 +1,9 @@
-// import Versions from './components/Versions'
-// import electronLogo from './assets/electron.svg'
+import { useEffect } from 'react'
 
 import { Message } from '@libp2p/interface'
 import { useLibp2p } from '@comp/libp2p'
-import { useEffect } from 'react'
 import { Game } from '@comp/game'
+import { RPC_TOPIC } from '@comp/game/rpc'
 
 const Content = (): React.ReactNode => {
   const { libp2p } = useLibp2p()
@@ -22,6 +21,7 @@ const Content = (): React.ReactNode => {
     // NOTE(Alan): seems like you must add the event listener before subscribing
     libp2p.services.pubsub.addEventListener('message', onMessage)
     libp2p.services.pubsub.subscribe('paima-test')
+    libp2p.services.pubsub.subscribe(RPC_TOPIC)
 
     return (): void => {
       libp2p.services.pubsub.removeEventListener('message', onMessage)

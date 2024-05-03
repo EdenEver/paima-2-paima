@@ -91,6 +91,7 @@ node.addEventListener("self:peer:update", ({ detail: { peer } }) => {
 })
 
 node.services.pubsub.subscribe("paima-test")
+node.services.pubsub.subscribe("rpc")
 
 console.log("topics", node.services.pubsub.getTopics())
 
