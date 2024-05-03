@@ -1,15 +1,15 @@
-import { PropsWithChildren, memo, useCallback, useEffect, useRef } from "react"
+import { PropsWithChildren, memo, useCallback, useEffect, useRef } from 'react'
 
-import { last } from "lodash"
-import { Box3, Group, Mesh, Sphere, Vector3 } from "three"
-import { suspend } from "suspend-react"
-import { ThreeEvent, useFrame } from "@react-three/fiber"
-import { NavMesh, NavMeshQuery, TileCache, init as initRecast } from "recast-navigation"
-import { threeToTileCache } from "recast-navigation/three"
+import { last } from 'lodash'
+import { Box3, Group, Mesh, Sphere, Vector3 } from 'three'
+import { suspend } from 'suspend-react'
+import { ThreeEvent, useFrame } from '@react-three/fiber'
+import { NavMesh, NavMeshQuery, TileCache, init as initRecast } from 'recast-navigation'
+import { threeToTileCache } from 'recast-navigation/three'
 
-import { navMeshConfig } from "@comp/game/terrain"
-import { useMoveIndicator } from "@comp/game/ui"
-import { Player, Target, usePlayer } from "@comp/game/player"
+import { navMeshConfig } from '@comp/game/terrain'
+import { useMoveIndicator } from '@comp/game/ui'
+import { Player, Target, usePlayer } from '@comp/game/player'
 
 // import { Model as WallGated } from '@client/components/objects/WallGated';
 
@@ -27,7 +27,7 @@ const Navmesh = ({ children }: NavmeshProps) => {
 
   const group = useRef<Group>(null!)
 
-  console.log("render") // TODO ONLY RE-RENDER WHEN NEEDED!!!!!!
+  console.log('render') // TODO ONLY RE-RENDER WHEN NEEDED!!!!!!
 
   const indicatorRef = useRef<number>(0)
 
@@ -81,12 +81,12 @@ const Navmesh = ({ children }: NavmeshProps) => {
             id: obj.userData.id,
             health: obj.userData.health,
             position: targetPos.toArray(),
-            type: "chest",
+            type: 'chest'
           }
 
           setPlayer({
             ...player,
-            target,
+            target
           })
         }
       }
@@ -100,7 +100,7 @@ const Navmesh = ({ children }: NavmeshProps) => {
 
       indicatorRef.current = 50
 
-     const navMeshQuery = new NavMeshQuery({ navMesh: navMesh.current })
+      const navMeshQuery = new NavMeshQuery({ navMesh: navMesh.current })
 
       const { success, path: newPath } = navMeshQuery.computePath(startPosition, point)
 
@@ -123,7 +123,7 @@ const Navmesh = ({ children }: NavmeshProps) => {
       setPlayer(
         (prev: Player): Player => ({
           ...prev,
-          path: newPath.map((p) => [p.x, p.y, p.z]),
+          path: newPath.map((p) => [p.x, p.y, p.z])
         })
       )
     },
@@ -144,7 +144,7 @@ const Navmesh = ({ children }: NavmeshProps) => {
     const meshes: Mesh[] = []
 
     group.current.traverse((child) => {
-      if (child.type === "Mesh") {
+      if (child.type === 'Mesh') {
         meshes.push(child as Mesh)
       }
     })

@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 
 import { twMerge } from 'tailwind-merge'
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, Preload } from '@react-three/drei'
 
 import { CAMERA_NEAR, CAMERA_OFFSET, CAMERA_ZOOM } from '@comp/game'
 import { useIsHoveringObject } from '@comp/game/ui'
@@ -53,6 +53,8 @@ export const Game = () => {
         orthographic
         camera={{ zoom: CAMERA_ZOOM, near: CAMERA_NEAR, position: CAMERA_OFFSET }}
       >
+        <Preload all />
+
         <Suspense fallback={null}>
           <Scene />
         </Suspense>
