@@ -25,6 +25,7 @@
     "@electron-toolkit/utils": "3.0.0",
     "@libp2p/interface-pubsub": "^4.0.1",
     "electron-updater": "6.1.7",
+    "express": "^4.19.2",
     "tailwind-merge": "^2.3.0",
     "three-stdlib": "^2.29.10"
   },

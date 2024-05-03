@@ -117,7 +117,9 @@ type Props = JSX.IntrinsicElements['group'] & {
 export const Model: FC<Props> = ({ action, asShadow, ...props }) => {
   const group = useRef<THREE.Group>(null!)
 
-  const { scene, materials, animations } = useGLTF('/models/knight.glb') as GLTFResult
+  const { scene, materials, animations } = useGLTF(
+    'http://localhost:4792/models/knight.glb'
+  ) as GLTFResult
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
   const graph = useGraph(clone)
   const nodes = graph.nodes as GLTFResult['nodes']
@@ -191,4 +193,4 @@ export const Model: FC<Props> = ({ action, asShadow, ...props }) => {
   )
 }
 
-useGLTF.preload('/models/knight.glb')
+useGLTF.preload('http://localhost:4792/models/knight.glb')

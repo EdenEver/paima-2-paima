@@ -6,13 +6,11 @@
   "scripts": {
     "dev:bootstrap-server": "npm run dev -w bootstrap-server",
     "dev:electron": "npm run dev -w electron-client",
-    "devclient": "npm run dev -w client",
     "dev": "run-p dev:bootstrap-server dev:electron"
   },
   "workspaces": [
     "./bootstrap-server",
-    "./electron-client",
-    "./client"
+    "./electron-client"
   ],
   "keywords": [],
   "author": "Alan Smithee",

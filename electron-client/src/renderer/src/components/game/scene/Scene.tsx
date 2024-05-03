@@ -22,6 +22,8 @@ export const Scene = () => {
     if (!playerRef.current) return
 
     // NOTE Assuming the camera is direct child of the Scene
+
+    // eslint-disable-next-line @react-three/no-new-in-loop
     const objectPosition = new Vector3()
     playerRef.current.getWorldPosition(objectPosition)
 
@@ -35,20 +37,28 @@ export const Scene = () => {
     if (!player.path?.length) return
 
     const nextEl = player.path[0]
+
+    // eslint-disable-next-line @react-three/no-new-in-loop
     const next = new Vector3(nextEl[0], nextEl[1], nextEl[2])
 
+    // eslint-disable-next-line @react-three/no-clone-in-loop
     const direction = next.clone().sub(playerRef.current.position).normalize()
 
     // have player slowly turn towards direction
+
     playerRef.current.quaternion.slerp(
+      // eslint-disable-next-line @react-three/no-new-in-loop
       new Quaternion().setFromUnitVectors(
+        // eslint-disable-next-line @react-three/no-new-in-loop
         new Vector3(0, 0, 1),
+        // eslint-disable-next-line @react-three/no-new-in-loop
         new Vector3(direction.x, 0, direction.z).normalize()
       ),
       0.125
     )
 
     const nextPosition = playerRef.current.position
+      // eslint-disable-next-line @react-three/no-clone-in-loop
       .clone()
       .add(direction.multiplyScalar(delta * PLAYER_SPEED))
 

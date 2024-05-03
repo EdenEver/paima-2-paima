@@ -30,7 +30,11 @@ const Content = (): React.ReactNode => {
   }, [libp2p.services.pubsub])
 
   return (
-    <div className="h-screen">
+    <div className="h-screen relative">
+      <div className="absolute top-2 right-4 p-2 py-1 bg-white rounded z-10">
+        <button onClick={() => fetch('http://localhost:4200/123')}>Fetch</button>
+      </div>
+
       <Game />
     </div>
   )
