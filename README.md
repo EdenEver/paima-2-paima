@@ -43,3 +43,14 @@ A listen address is an address that a peer listens on for incoming connections. 
 
 ### Peer discovery
 
+
+## From discord
+
+### STUN / TURN NAT hole punching 
+
+So for the browser-to-brower use-case, assuming that both are behind NAT, there’s a good chance that a TURN server will be required to establish a connection.
+
+However, unlike STUN servers, TURN servers are more “costly” (and there are far fewer free ones) as they serve as proxies if NAT hole punching fails.
+Should be working 🙂
+
+https://delegated-ipfs.dev/routing/v1/providers/bafybeicklkqcnlvtiscr2hzkubjwnwjinvskffn4xorqeduft3wq7vm5u4

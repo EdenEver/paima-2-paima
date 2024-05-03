@@ -1,2 +1,2 @@
-export * from "./constants/camera-constants"
-export * from "./Game"
+export * from './constants/camera-constants'
+export * from './Game'

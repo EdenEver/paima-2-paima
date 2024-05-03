@@ -1,12 +1,12 @@
-import { atom, useAtom } from "jotai"
-import { Player } from "@comp/game/player"
+import { atom, useAtom } from 'jotai'
+import { Player } from '@comp/game/player'
 
 const playerAtom = atom<Player>({
-  name: "",
+  name: '',
   position: [0, 0, 0],
   rotationY: 0,
   path: [],
-  target: null,
+  target: null
 })
 
 export const usePlayer = () => {
@@ -14,6 +14,6 @@ export const usePlayer = () => {
 
   return {
     player,
-    setPlayer,
+    setPlayer
   }
 }

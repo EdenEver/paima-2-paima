@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev:bootstrap-server": "npm run dev -w bootstrap-server",
-    "dev:electron-client": "npm run dev -w electron-client",
-    "dev:client": "npm run dev -w client",
-    "dev": "run-p dev:*"
+    "dev:electron": "npm run dev -w electron-client",
+    "devclient": "npm run dev -w client",
+    "dev": "run-p dev:bootstrap-server dev:electron"
   },
   "workspaces": [
     "./bootstrap-server",

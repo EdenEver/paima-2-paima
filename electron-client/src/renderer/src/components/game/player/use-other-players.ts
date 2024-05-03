@@ -1,5 +1,5 @@
-import { atom, useAtom } from "jotai"
-import { Player } from "@comp/game/player"
+import { atom, useAtom } from 'jotai'
+import { Player } from '@comp/game/player'
 
 const otherPlayersAtom = atom<Player[]>([])
 
@@ -8,6 +8,6 @@ export const useOtherPlayers = () => {
 
   return {
     players,
-    setPlayers,
+    setPlayers
   }
 }

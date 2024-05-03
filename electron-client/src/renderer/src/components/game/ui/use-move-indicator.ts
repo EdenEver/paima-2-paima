@@ -1,5 +1,5 @@
-import { atom, useAtom } from "jotai"
-import { Vector3 } from "three"
+import { atom, useAtom } from 'jotai'
+import { Vector3 } from 'three'
 
 const moveIndicatorAtom = atom<Vector3 | null>(null)
 
@@ -8,6 +8,6 @@ export const useMoveIndicator = () => {
 
   return {
     moveIndicator,
-    setMoveIndicator,
+    setMoveIndicator
   }
 }

@@ -1,4 +1,4 @@
-import { atom, useAtom } from "jotai"
+import { atom, useAtom } from 'jotai'
 
 const numHoveredObjectsAtom = atom(0)
 
@@ -7,6 +7,6 @@ export const useNumHoveredObjects = () => {
 
   return {
     numHoveredObjects,
-    setNumHoveredObjects,
+    setNumHoveredObjects
   }
 }
