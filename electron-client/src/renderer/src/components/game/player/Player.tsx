@@ -1,18 +1,19 @@
-import React, { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 
 import { Group, Quaternion, Vector3 } from "three"
 import { Line, Text } from "@react-three/drei"
 import { useFrame, useThree } from "@react-three/fiber"
 
 import { CAMERA_OFFSET } from "@comp/game"
-import { PLAYER_SPEED, usePlayer } from "@comp/game/player"
-import { Knight, KnightActionName } from "@comp/game/entities"
+import { PLAYER_SPEED, usePlayer, usePlayerAction } from "@comp/game/player"
+import { Knight } from "@comp/game/entities"
 
 export const Player = () => {
   const { camera } = useThree()
   const cameraTarget = useRef<Vector3>(new Vector3())
 
   const player = usePlayer()
+  const { action, setAction } = usePlayerAction()
   const playerRef = useRef<Group>(null!)
   const text = useRef<Group>(null!)
 
@@ -32,7 +33,13 @@ export const Player = () => {
   })
 
   useFrame((_, delta) => {
-    if (!player.path?.length) return
+    if (!player.path?.length) {
+      if (action !== "Idle") setAction("Idle")
+
+      return
+    }
+
+    if (action !== "Running_A") setAction("Running_A")
 
     const nextEl = player.path[0]
 
@@ -87,16 +94,14 @@ export const Player = () => {
     text.current.position.copy(playerRef.current.position)
   })
 
-  const [action, setCharacterAction] = React.useState<KnightActionName>("Idle")
-
   useEffect(() => {
     if (player.path.length > 0) {
-      setCharacterAction("Running_A")
+      setAction("Running_A")
       return
     }
 
     if (!player.target) {
-      setCharacterAction("Idle")
+      setAction("Idle")
       return
     }
   }, [player.path, player.target])
