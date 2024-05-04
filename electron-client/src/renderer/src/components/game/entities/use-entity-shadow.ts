@@ -1,11 +1,7 @@
-import { useMemo, useEffect } from 'react'
-import { Color, Mesh, MeshStandardMaterial } from 'three'
+import { useMemo, useEffect } from "react"
+import { Color, Mesh, MeshStandardMaterial } from "three"
 
-export const useEntityShadow = (
-  nodes: Mesh[],
-  material: MeshStandardMaterial,
-  asShadow?: boolean
-) => {
+export const useEntityShadow = (nodes: Mesh[], material: MeshStandardMaterial, asShadow?: boolean) => {
   const shadowMaterial = useMemo(() => {
     if (!asShadow) return material
 

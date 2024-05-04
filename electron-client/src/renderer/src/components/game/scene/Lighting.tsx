@@ -1,8 +1,8 @@
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef } from "react"
 
-import { Group } from 'three'
+import { Group } from "three"
 
-import { usePlayer } from '@comp/game/player'
+import { usePlayer } from "@comp/game/player"
 
 export const Lighting = () => {
   const player = usePlayer()
@@ -13,7 +13,7 @@ export const Lighting = () => {
   return (
     <>
       <ambientLight intensity={1} rotation-x={5} />
-      <hemisphereLight intensity={1} groundColor={'#080820'} position={[0, 5, 0]} />
+      <hemisphereLight intensity={1} groundColor={"#080820"} position={[0, 5, 0]} />
 
       <group ref={lightTarget} position={playerPosition}>
         <directionalLight

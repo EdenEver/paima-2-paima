@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { AnimationAction } from 'three'
+import { useEffect, useState } from "react"
+import { AnimationAction } from "three"
 
 type Actions = {
   [x: string]: AnimationAction | null

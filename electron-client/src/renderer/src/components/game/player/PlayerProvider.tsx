@@ -1,13 +1,14 @@
-import { PropsWithChildren, useRef } from 'react'
-import { Player, playerContext } from '@comp/game/player'
+import { PropsWithChildren, useRef } from "react"
+import { playerContext } from "@comp/game/player"
+import { Player } from "edenever"
 
 const usePlayerRef = () => {
   const ref = useRef<Player>({
-    name: '',
+    name: "",
     position: [0, 0, 0],
     rotationY: 0,
     path: [],
-    target: null
+    target: null,
   })
 
   return ref.current

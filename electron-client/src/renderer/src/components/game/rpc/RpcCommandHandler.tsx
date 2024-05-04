@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect } from "react"
 
-import { Message, SignedMessage } from '@libp2p/interface-pubsub'
+import { Message, SignedMessage } from "@libp2p/interface-pubsub"
 
-import { RPC_TOPIC, RpcCommand, RpcMessage } from '@comp/game/rpc'
-import { useLibp2p } from '@renderer/components/libp2p'
+import { RPC_TOPIC, RpcCommand, RpcMessage } from "@comp/game/rpc"
+import { useLibp2p } from "@renderer/components/libp2p"
 // import { useOtherPlayers } from '../player/use-other-players'
 
 export const RpcCommandHandler = () => {
@@ -21,17 +21,17 @@ export const RpcCommandHandler = () => {
 
       const rpcMessage: RpcMessage = {
         command,
-        peerId: from.toString()
+        peerId: from.toString(),
       }
 
-      if (rpcMessage.command === 'join') {
-        alert('another peer joined the game')
+      if (rpcMessage.command === "join") {
+        alert("another peer joined the game")
       }
     }
 
     const messageCBWrapper = async (e: Event) => {
       const evt = e as CustomEvent<Message>
-      if (evt.detail?.type !== 'signed') return
+      if (evt.detail?.type !== "signed") return
 
       switch (evt.detail.topic) {
         case RPC_TOPIC: {
@@ -41,10 +41,10 @@ export const RpcCommandHandler = () => {
       }
     }
 
-    libp2p.services.pubsub.addEventListener('message', messageCBWrapper)
+    libp2p.services.pubsub.addEventListener("message", messageCBWrapper)
 
     return () => {
-      libp2p.services.pubsub.removeEventListener('message', messageCBWrapper)
+      libp2p.services.pubsub.removeEventListener("message", messageCBWrapper)
     }
   }, [libp2p])
 

@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect } from "react"
 
-import { Message } from '@libp2p/interface'
-import { useLibp2p } from '@comp/libp2p'
-import { Game } from '@comp/game'
-import { RPC_TOPIC } from '@comp/game/rpc'
+import { Message } from "@libp2p/interface"
+import { useLibp2p } from "@comp/libp2p"
+import { Game } from "@comp/game"
+import { RPC_TOPIC } from "@comp/game/rpc"
 
 const Content = (): React.ReactNode => {
   const { libp2p } = useLibp2p()
@@ -13,19 +13,19 @@ const Content = (): React.ReactNode => {
       const { topic, data } = event.detail
       const msg = new TextDecoder().decode(data)
 
-      if (topic === 'paima-test') {
+      if (topic === "paima-test") {
         console.log(`Received message from ${topic} : ${msg}\n`)
       }
     }
 
     // NOTE(Alan): seems like you must add the event listener before subscribing
-    libp2p.services.pubsub.addEventListener('message', onMessage)
-    libp2p.services.pubsub.subscribe('paima-test')
+    libp2p.services.pubsub.addEventListener("message", onMessage)
+    libp2p.services.pubsub.subscribe("paima-test")
     libp2p.services.pubsub.subscribe(RPC_TOPIC)
 
     return (): void => {
-      libp2p.services.pubsub.removeEventListener('message', onMessage)
-      libp2p.services.pubsub.unsubscribe('paima-test')
+      libp2p.services.pubsub.removeEventListener("message", onMessage)
+      libp2p.services.pubsub.unsubscribe("paima-test")
     }
   }, [libp2p.services.pubsub])
 
@@ -33,7 +33,7 @@ const Content = (): React.ReactNode => {
     <div className="h-screen relative">
       <button
         className="absolute bottom-12 right-2 p-2 py-1 bg-white rounded z-10"
-        onClick={() => fetch('http://localhost:4200/123')}
+        onClick={() => fetch("http://localhost:4200/123")}
       >
         Fetch
       </button>

@@ -1,8 +1,8 @@
 import {
   SoloNavMeshGeneratorConfig,
   TiledNavMeshGeneratorConfig,
-  TileCacheGeneratorConfig
-} from 'recast-navigation/generators'
+  TileCacheGeneratorConfig,
+} from "recast-navigation/generators"
 
 type NavMeshConfig =
   | Partial<SoloNavMeshGeneratorConfig>
@@ -22,5 +22,5 @@ export const navMeshConfig: NavMeshConfig = {
   mergeRegionArea: 20,
   maxVertsPerPoly: 6,
   detailSampleDist: 6,
-  detailSampleMaxError: 1
+  detailSampleMaxError: 1,
 }

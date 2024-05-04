@@ -1,15 +1,14 @@
 import React, { useEffect, useRef } from "react"
 
 import { Group, Quaternion, Vector3 } from "three"
-import { Box, Capsule, Line, Text } from "@react-three/drei"
+import { Line, Text } from "@react-three/drei"
 import { useFrame, useThree } from "@react-three/fiber"
 
 import { CAMERA_OFFSET } from "@comp/game"
-import { terrain, RecastNavmesh } from "@comp/game/terrain"
 import { PLAYER_SPEED, usePlayer } from "@comp/game/player"
 import { Knight, KnightActionName } from "@comp/game/entities"
 
-export const Scene = () => {
+export const Player = () => {
   const { camera } = useThree()
   const cameraTarget = useRef<Vector3>(new Vector3())
 
@@ -116,26 +115,6 @@ export const Scene = () => {
           Player Name
         </Text>
       </group>
-
-      <RecastNavmesh>
-        {terrain.map(({ type, props, material, width, height, radius, length }, i) => {
-          if (type === "box")
-            return (
-              <Box args={[width, height]} {...props} key={`terrain-${i}`}>
-                <meshStandardMaterial color={material?.color ?? "#444"} />
-              </Box>
-            )
-
-          if (type === "capsule")
-            return (
-              <Capsule args={[radius, length]} {...props} key={`terrain-${i}`}>
-                <meshStandardMaterial color={material?.color ?? "#444"} />
-              </Capsule>
-            )
-
-          return null
-        })}
-      </RecastNavmesh>
 
       <group ref={playerRef} position={player.position}>
         <group position-y={0.5 - (playerRef.current?.position.y || 0)}>

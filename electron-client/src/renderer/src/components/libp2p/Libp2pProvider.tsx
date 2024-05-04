@@ -1,5 +1,5 @@
-import { PropsWithChildren, useEffect, useState } from 'react'
-import { LibP2P, createLibp2p, libp2pContext } from '.'
+import { PropsWithChildren, useEffect, useState } from "react"
+import { LibP2P, createLibp2p, libp2pContext } from "."
 
 let loaded = false
 
@@ -21,7 +21,7 @@ export const Libp2pProvider = ({ children }: PropsWithChildren<object>): React.R
           setLibp2p(libp2p)
         }
       } catch (e) {
-        console.error('failed to start libp2p', e)
+        console.error("failed to start libp2p", e)
       }
     }
 

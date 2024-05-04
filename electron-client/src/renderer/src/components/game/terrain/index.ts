@@ -1,3 +1,3 @@
-export * from './terrain'
-export * from './navmesh-config'
-export * from './RecastNavmesh'
+export * from "./terrain"
+export * from "./navmesh-config"
+export * from "./RecastNavmesh"
