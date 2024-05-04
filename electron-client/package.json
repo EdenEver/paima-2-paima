@@ -16,9 +16,10 @@
     "build": "npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "npm run build && electron-builder --dir",
-    "build:win": "npm run build && electron-builder --win",
+    "build:win": "npm run build && electron-builder --win && npm run copy-public:win",
     "build:mac": "electron-vite build && electron-builder --mac",
-    "build:linux": "electron-vite build && electron-builder --linux"
+    "build:linux": "electron-vite build && electron-builder --linux",
+    "copy-public:win": "cp public dist/win-unpacked/ -r"
   },
   "dependencies": {
     "@electron-toolkit/preload": "3.0.1",
@@ -63,7 +64,6 @@
     "jotai": "2.8.0",
     "libp2p": "1.5.1",
     "lodash": "4.17.21",
-    "multiaddr": "10.0.1",
     "postcss": "8.4.38",
     "prettier": "3.2.5",
     "react": "18.3.1",

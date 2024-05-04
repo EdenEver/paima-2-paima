@@ -17,6 +17,6 @@ export const runStaticServer = () => {
   app.use(express.static(resolvePath(process.cwd(), "public")))
 
   app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`Serving static assets on port ${port}`)
   })
 }
