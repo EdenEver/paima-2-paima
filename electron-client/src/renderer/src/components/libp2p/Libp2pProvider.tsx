@@ -3,7 +3,7 @@ import { LibP2P, createLibp2p, libp2pContext } from '.'
 
 let loaded = false
 
-export function AppWrapper({ children }: PropsWithChildren<object>): React.ReactNode {
+export const Libp2pProvider = ({ children }: PropsWithChildren<object>): React.ReactNode => {
   const [libp2p, setLibp2p] = useState<LibP2P>()
 
   useEffect(() => {

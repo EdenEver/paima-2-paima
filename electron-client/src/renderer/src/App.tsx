@@ -31,9 +31,12 @@ const Content = (): React.ReactNode => {
 
   return (
     <div className="h-screen relative">
-      <div className="absolute top-2 right-4 p-2 py-1 bg-white rounded z-10">
-        <button onClick={() => fetch('http://localhost:4200/123')}>Fetch</button>
-      </div>
+      <button
+        className="absolute bottom-12 right-2 p-2 py-1 bg-white rounded z-10"
+        onClick={() => fetch('http://localhost:4200/123')}
+      >
+        Fetch
+      </button>
 
       <Game />
     </div>

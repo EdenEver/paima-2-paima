@@ -26,6 +26,7 @@
     "@libp2p/interface-pubsub": "^4.0.1",
     "electron-updater": "6.1.7",
     "express": "^4.19.2",
+    "r3f-perf": "^7.2.1",
     "tailwind-merge": "^2.3.0",
     "three-stdlib": "^2.29.10"
   },

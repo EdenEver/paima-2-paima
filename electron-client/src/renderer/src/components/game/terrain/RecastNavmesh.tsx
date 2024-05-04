@@ -9,7 +9,7 @@ import { threeToTileCache } from 'recast-navigation/three'
 
 import { navMeshConfig } from '@comp/game/terrain'
 import { useMoveIndicator } from '@comp/game/ui'
-import { Player, Target, usePlayer } from '@comp/game/player'
+import { Target, usePlayer } from '@comp/game/player'
 
 // import { Model as WallGated } from '@client/components/objects/WallGated';
 
@@ -21,7 +21,7 @@ const Navmesh = ({ children }: NavmeshProps) => {
   const navMesh = useRef<NavMesh | null>(null)
   const tileCache = useRef<TileCache | null>(null)
 
-  const { player, setPlayer } = usePlayer()
+  const player = usePlayer()
 
   const { moveIndicator, setMoveIndicator } = useMoveIndicator()
 
@@ -50,7 +50,8 @@ const Navmesh = ({ children }: NavmeshProps) => {
       if (!point) return
 
       setMoveIndicator(null)
-      setPlayer({ ...player, path: [], target: null })
+      player.path = []
+      player.target = null
 
       const startPosition = new Vector3(...player.position)
 
@@ -84,10 +85,7 @@ const Navmesh = ({ children }: NavmeshProps) => {
             type: 'chest'
           }
 
-          setPlayer({
-            ...player,
-            target
-          })
+          player.target = target
         }
       }
 
@@ -120,14 +118,9 @@ const Navmesh = ({ children }: NavmeshProps) => {
         newPath.shift()
       }
 
-      setPlayer(
-        (prev: Player): Player => ({
-          ...prev,
-          path: newPath.map((p) => [p.x, p.y, p.z])
-        })
-      )
+      player.path = newPath.map((p) => [p.x, p.y, p.z])
     },
-    [player, setMoveIndicator, setPlayer]
+    [setMoveIndicator]
   )
 
   const init = useCallback(() => {

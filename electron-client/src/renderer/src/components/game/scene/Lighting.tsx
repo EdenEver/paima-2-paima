@@ -5,7 +5,7 @@ import { Group } from 'three'
 import { usePlayer } from '@comp/game/player'
 
 export const Lighting = () => {
-  const { player } = usePlayer()
+  const player = usePlayer()
 
   const lightTarget = useRef(new Group())
   const playerPosition = useMemo(() => player.position, [player.position])

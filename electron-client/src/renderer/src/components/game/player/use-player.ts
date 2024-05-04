@@ -1,19 +1,8 @@
-import { atom, useAtom } from 'jotai'
-import { Player } from '@comp/game/player'
-
-const playerAtom = atom<Player>({
-  name: '',
-  position: [0, 0, 0],
-  rotationY: 0,
-  path: [],
-  target: null
-})
+import { useContext } from 'react'
+import { playerContext } from './player-context'
 
 export const usePlayer = () => {
-  const [player, setPlayer] = useAtom(playerAtom)
+  const ctx = useContext(playerContext)
 
-  return {
-    player,
-    setPlayer
-  }
+  return ctx.player
 }

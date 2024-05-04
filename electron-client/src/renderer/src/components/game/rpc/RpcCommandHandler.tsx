@@ -4,9 +4,12 @@ import { Message, SignedMessage } from '@libp2p/interface-pubsub'
 
 import { RPC_TOPIC, RpcCommand, RpcMessage } from '@comp/game/rpc'
 import { useLibp2p } from '@renderer/components/libp2p'
+// import { useOtherPlayers } from '../player/use-other-players'
 
 export const RpcCommandHandler = () => {
   const { libp2p } = useLibp2p()
+
+  // const { setOtherPlayers } = useOtherPlayers()
 
   // Effect hook to subscribe to pubsub events and update the message state hook
   // Effect hook to subscribe to pubsub events and update the message state hook

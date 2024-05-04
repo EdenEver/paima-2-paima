@@ -6,17 +6,16 @@ import { useFrame, useThree } from '@react-three/fiber'
 
 import { CAMERA_OFFSET } from '@comp/game'
 import { terrain, RecastNavmesh } from '@comp/game/terrain'
-import { PLAYER_SPEED, Player, usePlayer } from '@comp/game/player'
+import { PLAYER_SPEED, usePlayer } from '@comp/game/player'
 import { Knight, KnightActionName } from '@comp/game/entities'
 
 export const Scene = () => {
-  const playerRef = useRef<Group>(null!)
-  const text = useRef<Group>(null!)
-
   const { camera } = useThree()
   const cameraTarget = useRef<Vector3>(new Vector3())
 
-  const { player, setPlayer } = usePlayer()
+  const player = usePlayer()
+  const playerRef = useRef<Group>(null!)
+  const text = useRef<Group>(null!)
 
   useFrame(() => {
     if (!playerRef.current) return
@@ -75,23 +74,11 @@ export const Scene = () => {
       playerRef.current.rotation.z
     ]
 
+    player.position = position
+    player.rotationY = rotation[1]
+
     if (playerRef.current.position.distanceTo(next) < 0.1) {
-      setPlayer(
-        (prev: Player): Player => ({
-          ...prev,
-          position,
-          rotationY: rotation[1],
-          path: player.path ? prev.path.slice(1) : []
-        })
-      )
-    } else {
-      setPlayer(
-        (prev: Player): Player => ({
-          ...prev,
-          position,
-          rotationY: rotation[1]
-        })
-      )
+      player.path = player.path.length > 0 ? player.path.slice(1) : []
     }
   })
 

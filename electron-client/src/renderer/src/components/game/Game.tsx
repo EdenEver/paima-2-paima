@@ -3,12 +3,13 @@ import { Suspense } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Preload } from '@react-three/drei'
+import { Perf } from 'r3f-perf'
 
+import { useLibp2p } from '@comp/libp2p'
 import { CAMERA_NEAR, CAMERA_OFFSET, CAMERA_ZOOM } from '@comp/game'
-import { useIsHoveringObject } from '@comp/game/ui'
-import { Scene, Lighting } from '@comp/game/scene'
 import { RPC_TOPIC, RpcCommandHandler } from '@comp/game/rpc'
-import { useLibp2p } from '../libp2p'
+import { Scene, Lighting } from '@comp/game/scene'
+import { useIsHoveringObject } from '@comp/game/ui'
 
 // let joined = false
 
@@ -19,9 +20,13 @@ export const Game = () => {
 
   const sendJoinEvent = async () => {
     try {
-      const command = 'join'
+      // const data = {
+      //   command: 'join',
+      //   position
 
-      const res = await libp2p.services.pubsub.publish(RPC_TOPIC, uint8ArrayFromString(command))
+      // }
+
+      const res = await libp2p.services.pubsub.publish(RPC_TOPIC, uint8ArrayFromString('join'))
 
       console.log('join res', res)
     } catch (e) {
@@ -37,9 +42,12 @@ export const Game = () => {
     <>
       <RpcCommandHandler />
 
-      <div className="absolute top-5 left-5 z-40 bg-white rounded py-1 px-2">
-        <button onClick={sendJoinEvent}>send join event</button>
-      </div>
+      <button
+        className="absolute bottom-2 right-2 z-40 bg-white rounded py-1 px-2"
+        onClick={sendJoinEvent}
+      >
+        send join event
+      </button>
 
       <Canvas
         className={canvasClasses}
@@ -48,6 +56,8 @@ export const Game = () => {
         orthographic
         camera={{ zoom: CAMERA_ZOOM, near: CAMERA_NEAR, position: CAMERA_OFFSET }}
       >
+        <Perf />
+
         <Preload all />
 
         <Suspense fallback={null}>
