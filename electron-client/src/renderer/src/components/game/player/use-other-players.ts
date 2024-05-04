@@ -1,5 +1,5 @@
+import { Player } from "edenever"
 import { atom, useAtom } from "jotai"
-import { Player } from "@comp/game/player"
 
 const otherPlayersAtom = atom<Player[]>([])
 

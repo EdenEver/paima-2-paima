@@ -1,5 +1,5 @@
+import { Player } from "edenever"
 import { createContext } from "react"
-import { Player } from "@comp/game/player"
 
 export interface PlayerContext {
   player: Player

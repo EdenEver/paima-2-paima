@@ -9,7 +9,8 @@ import { threeToTileCache } from "recast-navigation/three"
 
 import { navMeshConfig } from "@comp/game/terrain"
 import { useMoveIndicator } from "@comp/game/ui"
-import { Target, usePlayer } from "@comp/game/player"
+import { usePlayer } from "@comp/game/player"
+import { Target } from "edenever"
 
 // import { Model as WallGated } from '@client/components/objects/WallGated';
 
