@@ -1,31 +1,52 @@
 import { useEffect } from "react"
 
 import { Message, SignedMessage } from "@libp2p/interface-pubsub"
+import { Player } from "edenever"
 
-import { RPC_TOPIC, RpcCommand, RpcMessage } from "@comp/game/rpc"
-import { useLibp2p } from "@renderer/components/libp2p"
-// import { useOtherPlayers } from '../player/use-other-players'
+import { useLibp2p } from "@comp/libp2p"
+import { RPC_TOPIC, RpcCommand } from "@comp/game/rpc"
+import { useAddRemotePlayer, useRemoveRemotePlayer } from "@comp/game/player"
 
 export const RpcCommandHandler = () => {
   const { libp2p } = useLibp2p()
 
-  // const { setOtherPlayers } = useOtherPlayers()
+  const addRemotePlayer = useAddRemotePlayer()
+  const removeRemotePlayer = useRemoveRemotePlayer()
 
-  // Effect hook to subscribe to pubsub events and update the message state hook
-  // Effect hook to subscribe to pubsub events and update the message state hook
   useEffect(() => {
     const handleRpcMessage = (message: SignedMessage) => {
       const { data, from } = message
 
+      const peerId = from.toString()
       const command = new TextDecoder().decode(data) as RpcCommand
 
-      const rpcMessage: RpcMessage = {
-        command,
-        peerId: from.toString(),
-      }
+      switch (command) {
+        case "join": {
+          const player: Player = {
+            name: peerId,
+            position: [0, 0, 0],
+            path: [],
+            rotationY: 0,
+            target: null,
+          }
 
-      if (rpcMessage.command === "join") {
-        alert("another peer joined the game")
+          addRemotePlayer(peerId, player)
+          break
+        }
+        case "move": {
+          // if (remotePlayers[peerId]) {
+          //   remotePlayers[peerId].path = [] // JSON.parse(new TextDecoder().decode(data))
+          // }
+          break
+        }
+        case "leave": {
+          removeRemotePlayer(peerId)
+          break
+        }
+        default: {
+          command satisfies never
+          break
+        }
       }
     }
 
@@ -46,7 +67,7 @@ export const RpcCommandHandler = () => {
     return () => {
       libp2p.services.pubsub.removeEventListener("message", messageCBWrapper)
     }
-  }, [libp2p])
+  }, [libp2p, addRemotePlayer, removeRemotePlayer])
 
   // return nothing, just a handler
   return null

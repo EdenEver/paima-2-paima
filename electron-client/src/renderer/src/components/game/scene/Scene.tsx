@@ -1,9 +1,13 @@
 import { Box, Capsule } from "@react-three/drei"
 
+import { Player as PlayerInterface } from "edenever"
+
 import { terrain, RecastNavmesh } from "@comp/game/terrain"
-import { Player } from "@comp/game/player"
+import { Player, RemotePlayer, useRemotePlayers } from "@comp/game/player"
 
 export const Scene = () => {
+  const remotePlayers = useRemotePlayers()
+
   return (
     <>
       <RecastNavmesh>
@@ -27,6 +31,10 @@ export const Scene = () => {
       </RecastNavmesh>
 
       <Player />
+
+      {Object.entries(remotePlayers).map(([key, player]: [string, PlayerInterface]) => (
+        <RemotePlayer key={`remote-player-${key}`} player={player} />
+      ))}
     </>
   )
 }

@@ -1,4 +1,5 @@
 export const RPC_COMMAND_MOVE = "move"
 export const RPC_COMMAND_JOIN = "join"
+export const RPC_COMMAND_LEAVE = "leave"
 
-export type RpcCommand = typeof RPC_COMMAND_MOVE | typeof RPC_COMMAND_JOIN
+export type RpcCommand = typeof RPC_COMMAND_MOVE | typeof RPC_COMMAND_JOIN | typeof RPC_COMMAND_LEAVE

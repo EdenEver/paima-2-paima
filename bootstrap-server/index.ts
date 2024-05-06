@@ -103,22 +103,5 @@ node.services.pubsub.addEventListener("message", (event) => {
   newLine(2)
 })
 
-let increment = 0
-
-setInterval(async () => {
-  increment++
-
-  const topic = "paima-test"
-  const message = new TextEncoder().encode("message from server")
-
-  try {
-    await node.services.pubsub.publish(topic, message)
-  } catch (e) {
-    if (e instanceof Error) {
-      console.log("Error publishing message : ", e.message, `(${increment})`)
-    }
-  }
-}, 5_000)
-
 // NOTE(Alan): export needed for top-level await
 export {}
