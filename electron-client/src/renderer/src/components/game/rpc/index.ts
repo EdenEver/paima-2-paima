@@ -1,4 +1,3 @@
-export * from "./constants/rpc-topic"
-export * from "./constants/rpc-command"
-export * from "./rpc-message"
+export * from "./constants/RpcTopic"
+export * from "./constants/RpcCommand"
 export * from "./RpcCommandHandler"

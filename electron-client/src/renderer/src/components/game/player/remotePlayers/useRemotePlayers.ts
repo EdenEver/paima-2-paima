@@ -9,3 +9,9 @@ export const useRemotePlayers = () => {
 
   return remotePlayers
 }
+
+export const useRemotePlayersData = () => {
+  const { playerData } = useContext(remotePlayersContext)
+
+  return playerData
+}

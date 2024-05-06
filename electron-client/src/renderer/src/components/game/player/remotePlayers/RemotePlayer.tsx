@@ -19,6 +19,8 @@ const RemotePlayer = ({ player }: { player: Player }) => {
   const textRef = useRef<Group>(null!)
 
   useFrame((_, delta) => {
+    // console.log("player.path", player.path)
+
     if (!player.path?.length) {
       if (action !== "Idle") setAction("Idle")
 

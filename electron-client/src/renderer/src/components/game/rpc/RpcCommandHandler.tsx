@@ -4,50 +4,53 @@ import { Message, SignedMessage } from "@libp2p/interface-pubsub"
 import { Player } from "edenever"
 
 import { useLibp2p } from "@comp/libp2p"
-import { RPC_TOPIC, RpcCommand } from "@comp/game/rpc"
-import { useAddRemotePlayer, useRemoveRemotePlayer } from "@comp/game/player"
+import { RPC_TOPIC } from "@comp/game/rpc"
+import { objectFromUint8Array } from "@comp/util"
+import { useAddRemotePlayer, useRemoveRemotePlayer, useUpdateRemotePlayerPath } from "@comp/game/player"
+import { isRpcJoinMessage } from "./isRpcJoinMessage"
+import { isRpcLeaveMessage } from "./isRpcLeaveMessage"
+import { isRpcMoveMessage } from "./isRpcMoveMessage"
 
 export const RpcCommandHandler = () => {
   const { libp2p } = useLibp2p()
 
   const addRemotePlayer = useAddRemotePlayer()
   const removeRemotePlayer = useRemoveRemotePlayer()
+  const updateRemotePlayerPath = useUpdateRemotePlayerPath()
 
   useEffect(() => {
     const handleRpcMessage = (message: SignedMessage) => {
       const { data, from } = message
 
       const peerId = from.toString()
-      const command = new TextDecoder().decode(data) as RpcCommand
+      const rpcMessage = objectFromUint8Array(data)
 
-      switch (command) {
-        case "join": {
-          const player: Player = {
-            name: peerId,
-            position: [0, 0, 0],
-            path: [],
-            rotationY: 0,
-            target: null,
-          }
+      console.log("rpcMessage", rpcMessage)
 
-          addRemotePlayer(peerId, player)
-          break
+      if (isRpcJoinMessage(rpcMessage)) {
+        const player: Player = {
+          name: peerId,
+          position: [0, 0, 0],
+          path: [],
+          rotationY: 0,
+          target: null,
         }
-        case "move": {
-          // if (remotePlayers[peerId]) {
-          //   remotePlayers[peerId].path = [] // JSON.parse(new TextDecoder().decode(data))
-          // }
-          break
-        }
-        case "leave": {
-          removeRemotePlayer(peerId)
-          break
-        }
-        default: {
-          command satisfies never
-          break
-        }
+
+        addRemotePlayer(peerId, player)
+        return
       }
+
+      if (isRpcLeaveMessage(rpcMessage)) {
+        removeRemotePlayer(peerId)
+        return
+      }
+
+      if (isRpcMoveMessage(rpcMessage)) {
+        updateRemotePlayerPath(peerId, rpcMessage.path)
+        return
+      }
+
+      // rpcMessage.command satisfies never // todo
     }
 
     const messageCBWrapper = async (e: Event) => {

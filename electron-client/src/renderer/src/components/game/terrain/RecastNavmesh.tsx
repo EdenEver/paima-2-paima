@@ -1,16 +1,19 @@
 import { PropsWithChildren, memo, useCallback, useEffect, useRef } from "react"
 
 import { last } from "lodash"
-import { Box3, Group, Mesh, Sphere, Vector3 } from "three"
 import { suspend } from "suspend-react"
+import { Box3, Group, Mesh, Sphere, Vector3 } from "three"
 import { ThreeEvent, useFrame } from "@react-three/fiber"
 import { NavMesh, NavMeshQuery, TileCache, init as initRecast } from "recast-navigation"
 import { threeToTileCache } from "recast-navigation/three"
+import { RpcMoveMessage, Target } from "edenever"
 
+import { useLibp2p } from "@comp/libp2p"
+import { uint8ArrayFromObject } from "@comp/util"
 import { navMeshConfig } from "@comp/game/terrain"
 import { useMoveIndicator } from "@comp/game/ui"
 import { usePlayer } from "@comp/game/player"
-import { Target } from "edenever"
+import { RPC_TOPIC } from "@comp/game/rpc"
 
 // import { Model as WallGated } from '@client/components/objects/WallGated';
 
@@ -19,6 +22,8 @@ import { Target } from "edenever"
 type NavmeshProps = PropsWithChildren<object>
 
 const Navmesh = ({ children }: NavmeshProps) => {
+  const { libp2p } = useLibp2p()
+
   const navMesh = useRef<NavMesh | null>(null)
   const tileCache = useRef<TileCache | null>(null)
 
@@ -27,8 +32,6 @@ const Navmesh = ({ children }: NavmeshProps) => {
   const { moveIndicator, setMoveIndicator } = useMoveIndicator()
 
   const group = useRef<Group>(null!)
-
-  console.log("render") // TODO ONLY RE-RENDER WHEN NEEDED!!!!!!
 
   const indicatorRef = useRef<number>(0)
 
@@ -105,8 +108,6 @@ const Navmesh = ({ children }: NavmeshProps) => {
 
       if (!success) return
 
-      // const newPath = navMeshQuery.computePath(startPosition, point)
-
       // NOTE(Alan): Remove n first points if they are too close to the player
       //             avoids stuttering when repeatedly clicking in the same direction
       while (true) {
@@ -120,8 +121,15 @@ const Navmesh = ({ children }: NavmeshProps) => {
       }
 
       player.path = newPath.map((p) => [p.x, p.y, p.z])
+
+      const message: RpcMoveMessage = {
+        command: "move",
+        path: player.path,
+      }
+
+      libp2p.services.pubsub.publish(RPC_TOPIC, uint8ArrayFromObject(message))
     },
-    [setMoveIndicator],
+    [setMoveIndicator, libp2p, player, navMesh, player.path, player.position, player.target],
   )
 
   const init = useCallback(() => {

@@ -14,7 +14,7 @@ export const Player = () => {
 
   const player = usePlayer()
   const { action, setAction } = usePlayerAction()
-  
+
   const playerRef = useRef<Group>(null!)
   const textRef = useRef<Group>(null!)
 
