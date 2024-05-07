@@ -1,33 +1,53 @@
 import { useEffect } from "react"
 
-import { Message } from "@libp2p/interface"
-import { useLibp2p } from "@comp/libp2p"
+import { RpcJoinMessage, RpcLeaveMessage } from "edenever"
+
 import { Game } from "@comp/game"
+import { useLibp2p } from "@comp/libp2p"
 import { RPC_TOPIC } from "@comp/game/rpc"
+import { usePlayer } from "@comp/game/player"
+import { uint8ArrayFromObject } from "@comp/util"
 
 const Content = (): React.ReactNode => {
   const { libp2p } = useLibp2p()
+  const player = usePlayer()
 
   useEffect(() => {
-    const onMessage = (event: CustomEvent<Message>): void => {
-      const { topic, data } = event.detail
-      const msg = new TextDecoder().decode(data)
-
-      if (topic === "paima-test") {
-        console.log(`Received message from ${topic} : ${msg}\n`)
-      }
-    }
-
-    // NOTE(Alan): seems like you must add the event listener before subscribing
-    libp2p.services.pubsub.addEventListener("message", onMessage)
-    libp2p.services.pubsub.subscribe("paima-test")
     libp2p.services.pubsub.subscribe(RPC_TOPIC)
 
     return (): void => {
-      libp2p.services.pubsub.removeEventListener("message", onMessage)
-      libp2p.services.pubsub.unsubscribe("paima-test")
+      libp2p.services.pubsub.unsubscribe(RPC_TOPIC)
     }
   }, [libp2p.services.pubsub])
+
+  useEffect(() => {
+    const join = () => {
+      const message: RpcJoinMessage = {
+        command: "join",
+        player: {
+          ...player,
+        },
+      }
+
+      libp2p.services.pubsub.publish(RPC_TOPIC, uint8ArrayFromObject(message))
+    }
+
+    const interval = setInterval(join, 10_000)
+    const timeout = setTimeout(join, 1_000)
+
+    window.onbeforeunload = function () {
+      const message: RpcLeaveMessage = {
+        command: "leave",
+      }
+
+      libp2p.services.pubsub.publish(RPC_TOPIC, uint8ArrayFromObject(message))
+    }
+
+    return (): void => {
+      clearInterval(interval)
+      clearTimeout(timeout)
+    }
+  }, [libp2p.services.pubsub, player])
 
   return (
     <div className="h-screen relative">

@@ -76,6 +76,12 @@ const RemotePlayer = ({ player }: { player: Player }) => {
     }
   })
 
+  useFrame(() => {
+    if (!playerRef.current || !textRef.current) return
+
+    textRef.current.position.copy(playerRef.current.position)
+  })
+
   return (
     <>
       <group ref={textRef}>

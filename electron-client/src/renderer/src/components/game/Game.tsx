@@ -43,8 +43,6 @@ export const Game = () => {
 
   return (
     <>
-      <RpcCommandHandler />
-
       <button className="absolute bottom-2 right-2 z-40 bg-white rounded py-1 px-2" onClick={sendJoinEvent}>
         send join event
       </button>
@@ -59,6 +57,8 @@ export const Game = () => {
         <Perf />
 
         <Preload all />
+
+        <RpcCommandHandler />
 
         <Suspense fallback={null}>
           <Scene />

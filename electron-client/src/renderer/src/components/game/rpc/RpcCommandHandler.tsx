@@ -1,18 +1,17 @@
 import { useEffect } from "react"
 
 import { Message, SignedMessage } from "@libp2p/interface-pubsub"
+import { useThree } from "@react-three/fiber"
 import { Player } from "edenever"
 
 import { useLibp2p } from "@comp/libp2p"
-import { RPC_TOPIC } from "@comp/game/rpc"
 import { objectFromUint8Array } from "@comp/util"
+import { RPC_TOPIC, isRpcJoinMessage, isRpcLeaveMessage, isRpcMoveMessage } from "@comp/game/rpc"
 import { useAddRemotePlayer, useRemoveRemotePlayer, useUpdateRemotePlayerPath } from "@comp/game/player"
-import { isRpcJoinMessage } from "./isRpcJoinMessage"
-import { isRpcLeaveMessage } from "./isRpcLeaveMessage"
-import { isRpcMoveMessage } from "./isRpcMoveMessage"
 
 export const RpcCommandHandler = () => {
   const { libp2p } = useLibp2p()
+  const { invalidate } = useThree()
 
   const addRemotePlayer = useAddRemotePlayer()
   const removeRemotePlayer = useRemoveRemotePlayer()
@@ -29,24 +28,30 @@ export const RpcCommandHandler = () => {
 
       if (isRpcJoinMessage(rpcMessage)) {
         const player: Player = {
+          ...rpcMessage.player,
           name: peerId,
-          position: [0, 0, 0],
-          path: [],
-          rotationY: 0,
-          target: null,
         }
 
         addRemotePlayer(peerId, player)
+
+        invalidate()
+
         return
       }
 
       if (isRpcLeaveMessage(rpcMessage)) {
         removeRemotePlayer(peerId)
+
+        invalidate()
+
         return
       }
 
       if (isRpcMoveMessage(rpcMessage)) {
         updateRemotePlayerPath(peerId, rpcMessage.path)
+
+        invalidate()
+
         return
       }
 
