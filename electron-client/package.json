@@ -25,6 +25,7 @@
     "@electron-toolkit/preload": "3.0.1",
     "@electron-toolkit/utils": "3.0.0",
     "@libp2p/interface-pubsub": "4.0.1",
+    "@libp2p/webtransport": "^4.0.30",
     "electron-updater": "6.1.8",
     "express": "4.19.2",
     "r3f-perf": "7.2.1",

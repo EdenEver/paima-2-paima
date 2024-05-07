@@ -1,6 +1,7 @@
 import { Libp2p, createLibp2p } from "libp2p"
 import { Identify, identify } from "@chainsafe/libp2p-identify"
 import { webSockets } from "@libp2p/websockets"
+import { webTransport } from "@libp2p/webtransport"
 import * as filters from "@libp2p/websockets/filters"
 import { noise } from "@chainsafe/libp2p-noise"
 import { yamux } from "@chainsafe/libp2p-yamux"
@@ -24,6 +25,7 @@ const createNode = async (): Promise<LibP2P | null> => {
   try {
     libp2p = await createLibp2p({
       transports: [
+        webTransport(),
         webSockets({
           filter: filters.all,
         }),

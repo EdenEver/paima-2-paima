@@ -37,6 +37,7 @@ const node = await createLibp2p({
     }),
     pubsub: gossipsub({
       emitSelf: false,
+      allowedTopics: new Set(["paima-test", "rpc"]),
     }),
     identify: identify(),
   },
@@ -97,9 +98,9 @@ console.log("topics", node.services.pubsub.getTopics())
 
 node.services.pubsub.addEventListener("message", (event) => {
   const topic = event.detail.topic
-  const message = event.detail.data
+  const message = new TextDecoder().decode(event.detail.data)
 
-  console.log(`Received message from ${topic} : ${message.toString()}`)
+  console.log(`Received message from ${topic} : ${message}`)
   newLine(2)
 })
 

@@ -12,6 +12,14 @@ const Content = (): React.ReactNode => {
   const { libp2p } = useLibp2p()
   const player = usePlayer()
 
+  const getPeers = (): void => {
+    const peers = libp2p.services.pubsub.getPeers()
+    const subscribers = libp2p.services.pubsub.getSubscribers(RPC_TOPIC)
+
+    console.log("peers", peers.toString())
+    console.log("subscribers", subscribers.toString())
+  }
+
   useEffect(() => {
     libp2p.services.pubsub.subscribe(RPC_TOPIC)
 
@@ -51,6 +59,10 @@ const Content = (): React.ReactNode => {
 
   return (
     <div className="h-screen relative">
+      <button className="absolute bottom-16 left-2 p-2 py-1 bg-white rounded z-10" onClick={getPeers}>
+        Get subscribed peers
+      </button>
+
       <button
         className="absolute bottom-12 right-2 p-2 py-1 bg-white rounded z-10"
         onClick={() => fetch("http://localhost:4200/123")}
