@@ -26,8 +26,8 @@ const node = await createLibp2p({
   },
   peerDiscovery: [
     pubsubPeerDiscovery({
-      interval: 10_000,
-      topics: ["_paima-edenever._peer-discovery._p2p._pubsub", "_peer-discovery._p2p._pubsub"],
+      interval: 1_000,
+      // topics: ["_paima-edenever._peer-discovery._p2p._pubsub", "_peer-discovery._p2p._pubsub"],
       listenOnly: false,
     }),
   ],
@@ -37,7 +37,7 @@ const node = await createLibp2p({
     }),
     pubsub: gossipsub({
       emitSelf: false,
-      allowedTopics: new Set(["paima-test", "rpc"]),
+      doPX: true,
     }),
     identify: identify(),
   },
@@ -96,13 +96,13 @@ node.services.pubsub.subscribe("rpc")
 
 console.log("topics", node.services.pubsub.getTopics())
 
-node.services.pubsub.addEventListener("message", (event) => {
-  const topic = event.detail.topic
-  const message = new TextDecoder().decode(event.detail.data)
+// node.services.pubsub.addEventListener("message", (event) => {
+//   const topic = event.detail.topic
+//   const message = new TextDecoder().decode(event.detail.data)
 
-  console.log(`Received message from ${topic} : ${message}`)
-  newLine(2)
-})
+//   console.log(`Received message from ${topic} : ${message}`)
+//   newLine(2)
+// })
 
 // NOTE(Alan): export needed for top-level await
 export {}

@@ -55,8 +55,8 @@ const createNode = async (): Promise<LibP2P | null> => {
       // ],
       peerDiscovery: [
         pubsubPeerDiscovery({
-          interval: 10_000,
-          topics: ["_paima-edenever._peer-discovery._p2p._pubsub", "_peer-discovery._p2p._pubsub"],
+          interval: 1_000,
+          // topics: ["_paima-edenever._peer-discovery._p2p._pubsub", "_peer-discovery._p2p._pubsub"],
           listenOnly: false,
         }),
       ],
