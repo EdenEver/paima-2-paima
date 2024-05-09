@@ -8,12 +8,13 @@ import { noise } from "@chainsafe/libp2p-noise"
 import { yamux } from "@chainsafe/libp2p-yamux"
 import { ping } from "@libp2p/ping"
 import { pubsubPeerDiscovery } from "@libp2p/pubsub-peer-discovery"
+import { echo } from "@libp2p/echo"
 
 // read this: https://github.com/attestate/kiwistand/blob/main/src/config.mjs
 
 const node = await createLibp2p({
   addresses: {
-    listen: ["/ip4/0.0.0.0/tcp/5173/ws"],
+    listen: ["/ip4/0.0.0.0/tcp/4987/ws"],
   },
   transports: [webSockets()],
   connectionEncryption: [noise()],
@@ -27,9 +28,14 @@ const node = await createLibp2p({
     minConnections: 50,
   },
   peerDiscovery: [
-    pubsubPeerDiscovery(),
+    pubsubPeerDiscovery({
+      interval: 10_000,
+      topics: ["_paima-edenever._peer-discovery._p2p._pubsub", "_peer-discovery._p2p._pubsub"],
+      listenOnly: false,
+    }),
   ],
   services: {
+    echo: echo(),
     ping: ping({
       protocolPrefix: "paima-ping",
     }),
@@ -91,7 +97,7 @@ node.addEventListener("self:peer:update", ({ detail: { peer } }) => {
 })
 
 node.services.pubsub.subscribe("paima-test")
-node.services.pubsub.subscribe("rpc")
+node.services.pubsub.subscribe("game-rpc")
 
 console.log("topics", node.services.pubsub.getTopics())
 

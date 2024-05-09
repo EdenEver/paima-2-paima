@@ -3,8 +3,8 @@ import { electronAPI } from "@electron-toolkit/preload"
 
 // Custom APIs for renderer
 const api = {
-  onInitPeer: (callback) => ipcRenderer.on("init peer", (_, arg) => callback(arg)),
-  offInitPeer: (callback) => ipcRenderer.off("init peer", callback),
+  onGameRpc: (callback) => ipcRenderer.on("game-rpc", (_, arg) => callback(arg)),
+  offGameRpc: (callback) => ipcRenderer.off("game-rpc", (_, arg) => callback(arg)),
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
