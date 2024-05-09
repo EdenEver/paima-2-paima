@@ -4,7 +4,7 @@ import { Libp2p, createLibp2p } from "libp2p"
 import { Identify, identify } from "@chainsafe/libp2p-identify"
 import { GossipsubEvents, gossipsub } from "@chainsafe/libp2p-gossipsub"
 import { webSockets } from "@libp2p/websockets"
-import { tcp } from "@libp2p/tcp"
+// import { tcp } from "@libp2p/tcp"
 import { noise } from "@chainsafe/libp2p-noise"
 import { yamux } from "@chainsafe/libp2p-yamux"
 import { PingService, ping } from "@libp2p/ping"
@@ -24,9 +24,9 @@ export type Libp2pNode = Libp2p<{
 export const createLibp2pNode = async (): Promise<Libp2pNode> => {
   const libp2p = await createLibp2p({
     addresses: {
-      listen: ["/ip4/0.0.0.0/tcp/0"],
+      listen: ["/ip4/0.0.0.0/tcp/0/ws"],
     },
-    transports: [tcp()],
+    transports: [webSockets()],
     connectionEncryption: [noise()],
     streamMuxers: [yamux()],
     connectionGater: {
@@ -60,7 +60,7 @@ export const createLibp2pNode = async (): Promise<Libp2pNode> => {
   libp2p.services.pubsub.subscribe("paima-test")
   libp2p.services.pubsub.subscribe("game-rpc")
 
-  const ma = multiaddr("/ip4/127.0.0.1/tcp/4987")
+  const ma = multiaddr("/ip4/127.0.0.1/tcp/4987/ws")
   const conn = await libp2p.dial(ma)
   const latency = await libp2p.services.ping.ping(ma)
 
