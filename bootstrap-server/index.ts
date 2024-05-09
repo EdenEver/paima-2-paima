@@ -9,6 +9,8 @@ import { yamux } from "@chainsafe/libp2p-yamux"
 import { ping } from "@libp2p/ping"
 import { pubsubPeerDiscovery } from "@libp2p/pubsub-peer-discovery"
 
+// read this: https://github.com/attestate/kiwistand/blob/main/src/config.mjs
+
 const node = await createLibp2p({
   addresses: {
     listen: ["/ip4/0.0.0.0/tcp/5173/ws"],
@@ -25,11 +27,7 @@ const node = await createLibp2p({
     minConnections: 50,
   },
   peerDiscovery: [
-    pubsubPeerDiscovery({
-      interval: 1_000,
-      // topics: ["_paima-edenever._peer-discovery._p2p._pubsub", "_peer-discovery._p2p._pubsub"],
-      listenOnly: false,
-    }),
+    pubsubPeerDiscovery(),
   ],
   services: {
     ping: ping({
@@ -38,6 +36,7 @@ const node = await createLibp2p({
     pubsub: gossipsub({
       emitSelf: false,
       doPX: true,
+      allowPublishToZeroTopicPeers: true,
     }),
     identify: identify(),
   },

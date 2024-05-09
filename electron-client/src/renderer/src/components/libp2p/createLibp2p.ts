@@ -9,6 +9,7 @@ import { multiaddr } from "@multiformats/multiaddr"
 import { PingService, ping } from "@libp2p/ping"
 import { pubsubPeerDiscovery } from "@libp2p/pubsub-peer-discovery"
 import { GossipsubEvents, gossipsub } from "@chainsafe/libp2p-gossipsub"
+import { bootstrap } from "@libp2p/bootstrap"
 import { PubSub } from "@libp2p/interface"
 
 export type LibP2P = Libp2p<{
@@ -19,8 +20,10 @@ export type LibP2P = Libp2p<{
 
 let libp2p: LibP2P | null = null
 
-const createNode = async (): Promise<LibP2P | null> => {
+const createNode = async (multiaddrs: string[]): Promise<LibP2P | null> => {
   if (libp2p) return libp2p
+
+  console.log("creating libp2p node with bootstrap nodes : ", multiaddrs.join(", "))
 
   try {
     libp2p = await createLibp2p({
@@ -46,14 +49,10 @@ const createNode = async (): Promise<LibP2P | null> => {
         // denyOutboundUpgradedConnection: () => false,
       },
       // TODO(Alan): When we have a static peer id, enable this
-      // peerDiscovery: [
-      //   bootstrap({
-      //     list: [
-      //       "/ip4/127.0.0.1/tcp/5173/ws",
-      //     ]
-      //   })
-      // ],
       peerDiscovery: [
+        bootstrap({
+          list: multiaddrs,
+        }),
         pubsubPeerDiscovery({
           interval: 1_000,
           // topics: ["_paima-edenever._peer-discovery._p2p._pubsub", "_peer-discovery._p2p._pubsub"],

@@ -3,16 +3,21 @@ import { LibP2P, createLibp2p, libp2pContext } from "."
 
 let loaded = false
 
+interface Api {
+  onInitPeer: (cb: (data: { multiaddrs: string[] }) => void) => void
+  offInitPeer: (cb: (data: { multiaddrs: string[] }) => void) => void
+}
+
 export const Libp2pProvider = ({ children }: PropsWithChildren<object>): React.ReactNode => {
   const [libp2p, setLibp2p] = useState<LibP2P>()
 
   useEffect(() => {
-    const init = async (): Promise<void> => {
+    const onInitPeer = async ({ multiaddrs }: { multiaddrs: string[] }) => {
       if (loaded) return
+      loaded = true
 
       try {
-        loaded = true
-        const libp2p = await createLibp2p()
+        const libp2p = await createLibp2p(multiaddrs)
 
         if (libp2p) {
           // @ts-expect-error - expose libp2p to window for global usage
@@ -25,7 +30,11 @@ export const Libp2pProvider = ({ children }: PropsWithChildren<object>): React.R
       }
     }
 
-    init()
+    ;(window.api as Api)?.onInitPeer(onInitPeer)
+
+    return () => {
+      ;(window.api as Api)?.offInitPeer(onInitPeer)
+    }
   }, [])
 
   if (!libp2p) return null
