@@ -4,6 +4,7 @@ import { createLibp2p } from "libp2p"
 import { identify } from "@chainsafe/libp2p-identify"
 import { gossipsub } from "@chainsafe/libp2p-gossipsub"
 import { webSockets } from "@libp2p/websockets"
+import { tcp } from "@libp2p/tcp"
 import { noise } from "@chainsafe/libp2p-noise"
 import { yamux } from "@chainsafe/libp2p-yamux"
 import { ping } from "@libp2p/ping"
@@ -14,9 +15,9 @@ import { echo } from "@libp2p/echo"
 
 const node = await createLibp2p({
   addresses: {
-    listen: ["/ip4/0.0.0.0/tcp/4987/ws"],
+    listen: ["/ip4/0.0.0.0/tcp/4987"],
   },
-  transports: [webSockets()],
+  transports: [tcp()],
   connectionEncryption: [noise()],
   streamMuxers: [yamux()],
   connectionGater: {

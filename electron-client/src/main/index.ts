@@ -37,8 +37,8 @@ function createWindow(libp2pNode: Libp2pNode) {
 
         mainWindow.webContents.send("game-rpc", message)
       } catch (e) {
-        if (e instanceof ErrorEvent) console.error(e.error)
-        else if (e instanceof Error) console.error(e.message)
+        // if (e instanceof ErrorEvent) console.error(e.error)
+        if (e instanceof Error) console.error(e.message)
         else console.error(e)
       }
     })
