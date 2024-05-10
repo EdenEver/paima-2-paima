@@ -6,19 +6,17 @@ import { OrbitControls, Preload } from "@react-three/drei"
 import { RpcJoinMessage } from "edenever"
 import { Perf } from "r3f-perf"
 
-import { useLibp2p } from "@comp/libp2p"
 import { CAMERA_NEAR, CAMERA_OFFSET, CAMERA_ZOOM } from "@comp/game"
-import { RPC_TOPIC, RpcCommandHandler } from "@comp/game/rpc"
+import { RpcCommandHandler } from "@comp/game/rpc"
 import { Scene, Lighting } from "@comp/game/scene"
 import { useIsHoveringObject } from "@comp/game/ui"
-import { uint8ArrayFromObject } from "@comp/util"
 import { usePlayer } from "./player"
+import { sendGameRpc } from "../electron"
 
 // let joined = false
 
 export const Game = () => {
   const player = usePlayer()
-  const { libp2p } = useLibp2p()
 
   const sendJoinEvent = async () => {
     try {
@@ -29,9 +27,7 @@ export const Game = () => {
         },
       }
 
-      const res = await libp2p.services.pubsub.publish(RPC_TOPIC, uint8ArrayFromObject(message))
-
-      console.log("join res", res)
+      sendGameRpc(message)
     } catch (e) {
       console.log("failed to join", e)
     }
@@ -58,7 +54,7 @@ export const Game = () => {
 
         <Preload all />
 
-        <RpcCommandHandler />
+        {/* <RpcCommandHandler /> */}
 
         <Suspense fallback={null}>
           <Scene />

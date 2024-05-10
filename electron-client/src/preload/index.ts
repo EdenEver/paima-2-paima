@@ -1,8 +1,11 @@
-import { contextBridge } from "electron"
+import { contextBridge, ipcRenderer } from "electron"
 import { electronAPI } from "@electron-toolkit/preload"
 
 // Custom APIs for renderer
-const api = {}
+const api = {
+  onGameRpc: (callback) => ipcRenderer.on("game-rpc", (_, arg) => callback(arg)),
+  offGameRpc: (callback) => ipcRenderer.off("game-rpc", (_, arg) => callback(arg)),
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

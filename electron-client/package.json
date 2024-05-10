@@ -24,13 +24,16 @@
   "dependencies": {
     "@electron-toolkit/preload": "3.0.1",
     "@electron-toolkit/utils": "3.0.0",
+    "@libp2p/echo": "^1.0.5",
     "@libp2p/interface-pubsub": "4.0.1",
     "@libp2p/webtransport": "^4.0.30",
+    "bufferutil": "^4.0.8",
     "electron-updater": "6.1.8",
     "express": "4.19.2",
     "r3f-perf": "7.2.1",
     "tailwind-merge": "2.3.0",
-    "three-stdlib": "2.29.11"
+    "three-stdlib": "2.29.11",
+    "utf-8-validate": "^6.0.3"
   },
   "devDependencies": {
     "@chainsafe/libp2p-gossipsub": "13.0.0",

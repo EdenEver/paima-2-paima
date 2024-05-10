@@ -1,20 +1,20 @@
 import { RpcCommand } from "../constants/RpcCommand"
 
 declare module "edenever" {
-  interface RpcMessage {
+  interface RpcData {
     command: RpcCommand
   }
 
-  interface RpcJoinMessage extends RpcMessage {
+  interface RpcJoinData extends RpcData {
     command: "join"
     player: Player
   }
 
-  interface RpcLeaveMessage extends RpcMessage {
+  interface RpcLeaveData extends RpcData {
     command: "leave"
   }
 
-  interface RpcMoveMessage extends RpcMessage {
+  interface RpcMoveData extends RpcData {
     command: "move"
     path: [number, number, number][]
   }

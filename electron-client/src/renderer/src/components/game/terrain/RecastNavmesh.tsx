@@ -8,12 +8,10 @@ import { NavMesh, NavMeshQuery, TileCache, init as initRecast } from "recast-nav
 import { threeToTileCache } from "recast-navigation/three"
 import { RpcMoveMessage, Target } from "edenever"
 
-import { useLibp2p } from "@comp/libp2p"
-import { uint8ArrayFromObject } from "@comp/util"
 import { navMeshConfig } from "@comp/game/terrain"
 import { useMoveIndicator } from "@comp/game/ui"
 import { usePlayer } from "@comp/game/player"
-import { RPC_TOPIC } from "@comp/game/rpc"
+import { sendGameRpc } from "@renderer/components/electron"
 
 // import { Model as WallGated } from '@client/components/objects/WallGated';
 
@@ -22,8 +20,6 @@ import { RPC_TOPIC } from "@comp/game/rpc"
 type NavmeshProps = PropsWithChildren<object>
 
 const Navmesh = ({ children }: NavmeshProps) => {
-  const { libp2p } = useLibp2p()
-
   const navMesh = useRef<NavMesh | null>(null)
   const tileCache = useRef<TileCache | null>(null)
 
@@ -127,9 +123,9 @@ const Navmesh = ({ children }: NavmeshProps) => {
         path: player.path,
       }
 
-      libp2p.services.pubsub.publish(RPC_TOPIC, uint8ArrayFromObject(message))
+      sendGameRpc(message)
     },
-    [setMoveIndicator, libp2p, player, navMesh, player.path, player.position, player.target],
+    [setMoveIndicator, player, navMesh, player.path, player.position, player.target],
   )
 
   const init = useCallback(() => {

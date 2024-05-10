@@ -1,68 +1,93 @@
 import { useEffect } from "react"
 
-import { RpcJoinMessage, RpcLeaveMessage } from "edenever"
+import { Player, RpcJoinData, RpcLeaveData } from "edenever"
 
 import { Game } from "@comp/game"
-import { useLibp2p } from "@comp/libp2p"
-import { RPC_TOPIC } from "@comp/game/rpc"
-import { usePlayer } from "@comp/game/player"
-import { uint8ArrayFromObject } from "@comp/util"
+import { useAddRemotePlayer, usePlayer, useRemoveRemotePlayer, useUpdateRemotePlayerPath } from "@comp/game/player"
+import { sendGameRpc } from "./components/electron"
+
+import { RpcMessageCallback, subscribeToGameRpcMessages, unsubscribeToGameRpcMessages } from "@comp/electron"
+import { isRpcJoinData, isRpcLeaveData, isRpcMoveData } from "./components/game/rpc"
 
 const Content = (): React.ReactNode => {
-  const { libp2p } = useLibp2p()
   const player = usePlayer()
 
-  const getPeers = (): void => {
-    const peers = libp2p.services.pubsub.getPeers()
-    const subscribers = libp2p.services.pubsub.getSubscribers(RPC_TOPIC)
-
-    console.log("peers", peers.toString())
-    console.log("subscribers", subscribers.toString())
-  }
+  const addRemotePlayer = useAddRemotePlayer()
+  const removeRemotePlayer = useRemoveRemotePlayer()
+  const updateRemotePlayerPath = useUpdateRemotePlayerPath()
 
   useEffect(() => {
-    libp2p.services.pubsub.subscribe(RPC_TOPIC)
+    console.log("Hello")
+    const handleGameRpc: RpcMessageCallback = (message) => {
+      console.log("Hello message", message)
+      const { from, data } = message
 
-    return (): void => {
-      libp2p.services.pubsub.unsubscribe(RPC_TOPIC)
+      if (isRpcJoinData(data)) {
+        const player: Player = {
+          ...data.player,
+          name: from,
+        }
+
+        addRemotePlayer(from, player)
+
+        return
+      }
+
+      if (isRpcLeaveData(data)) {
+        removeRemotePlayer(from)
+
+        return
+      }
+
+      if (isRpcMoveData(data)) {
+        updateRemotePlayerPath(from, data.path)
+
+        return
+      }
+
+      // message.command satisfies never // todo
     }
-  }, [libp2p.services.pubsub])
+
+    subscribeToGameRpcMessages(handleGameRpc)
+
+    return () => {
+      unsubscribeToGameRpcMessages(handleGameRpc)
+    }
+  }, [])
 
   useEffect(() => {
     const join = () => {
-      const message: RpcJoinMessage = {
+      const data: RpcJoinData = {
         command: "join",
         player: {
           ...player,
         },
       }
 
-      libp2p.services.pubsub.publish(RPC_TOPIC, uint8ArrayFromObject(message))
+      sendGameRpc(data)
     }
 
     const interval = setInterval(join, 10_000)
     const timeout = setTimeout(join, 1_000)
 
-    window.onbeforeunload = function () {
-      const message: RpcLeaveMessage = {
-        command: "leave",
-      }
-
-      libp2p.services.pubsub.publish(RPC_TOPIC, uint8ArrayFromObject(message))
-    }
-
     return (): void => {
       clearInterval(interval)
       clearTimeout(timeout)
     }
-  }, [libp2p.services.pubsub, player])
+  }, [player])
+
+  useEffect(() => {
+    window.onbeforeunload = function () {
+      const data: RpcLeaveData = {
+        command: "leave",
+      }
+
+      sendGameRpc(data)
+    }
+  }, [])
 
   return (
     <div className="h-screen relative">
-      <button className="absolute bottom-16 left-2 p-2 py-1 bg-white rounded z-10" onClick={getPeers}>
-        Get subscribed peers
-      </button>
-
       <button
         className="absolute bottom-12 right-2 p-2 py-1 bg-white rounded z-10"
         onClick={() => fetch("http://localhost:4200/123")}
